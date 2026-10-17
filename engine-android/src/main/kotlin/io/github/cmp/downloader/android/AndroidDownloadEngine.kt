@@ -5,7 +5,6 @@ import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import io.github.cmp.downloader.android.worker.DownloadWorker
@@ -22,7 +21,7 @@ import kotlinx.coroutines.flow.Flow
  * with Foreground Service progress notifications.
  */
 class AndroidDownloadEngine(
-    private val context: Context,
+    context: Context,
     private val directEngine: SegmentedDownloadEngine = SegmentedDownloadEngine()
 ) : IDownloadEngine {
 
@@ -58,7 +57,6 @@ class AndroidDownloadEngine(
             .setConstraints(constraints)
             .setInputData(workDataOf(DownloadWorker.KEY_TASK_ID to task.id))
             .addTag(workTag(task.id))
-            .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
             .build()
 
         workManager.enqueueUniqueWork(
